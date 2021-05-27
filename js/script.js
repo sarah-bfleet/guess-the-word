@@ -14,8 +14,8 @@ const remainingSpan = document.querySelector(".remaining span");
 const message = document.querySelector(".message");
 //the hidden button that will appear prompting the player to play again
 const playAgainBtn = document.querySelector(".play-again");
-//starting word until we fetch words from a hosted file later 
 
+//starting word until we fetch words from a hosted file later
 const word = "magnolia";
 const guessedLetters = [];
 
@@ -67,5 +67,42 @@ const makeGuess = function (guess) {
     } else {
         guessedLetters.push(guess);
         console.log(guessedLetters);
+        updatePage();
+        updateWord(guessedLetters);
+    }
+};
+
+
+// function to update page with the letters the player guesses 
+const updatePage = function () {
+    guessedLettersElement.innerHTML = "";
+    for (const letter of guessedLetters) {
+        const li = document.createElement("li");
+    li.innerText = letter;
+    guessedLettersElement.append(li);
+    } 
+};
+
+// function to update the word in progress that accepts the guessedLetters array as a parameter 
+
+const updateWord = function (guessedLetters) {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+    const revealWord = [];
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) {
+            revealWord.push(letter.toUpperCase());
+        } else {
+            revealWord.push("●");
+        }
+    }  
+    wordInProgress.innerText = revealWord.join("");
+    wonGame();
+};
+
+const wonGame = function () {
+    if (word.toUpperCase() === wordInProgress.innerText) {
+        message.classList.add("win");
+        message.innerHTML = "<p class='highlight'>You guessed the correct word! Congrats!</p>";
     }
 };
